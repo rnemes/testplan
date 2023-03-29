@@ -88,7 +88,7 @@ def result_for_failed_task(original_result):
     result.report = TestGroupReport(
         name=original_result.task.name, category=ReportCategories.ERROR
     )
-    attrs = [attr for attr in original_result.task.all_attrs]
+    attrs = [attr for attr in original_result.task.serializable_attrs]
     result_lines = [
         "{}: {}".format(attr, getattr(original_result.task, attr))
         if getattr(original_result.task, attr, None)
@@ -128,7 +128,7 @@ class TestRunnerConfig(RunnableConfig):
         return {
             "name": str,
             ConfigOption("description", default=None): Or(str, None),
-            ConfigOption("logger_level", default=logger.TEST_INFO): int,
+            ConfigOption("logger_level", default=logger.USER_INFO): int,
             ConfigOption("file_log_level", default=logger.DEBUG): int,
             ConfigOption("runpath", default=default_runpath): Or(
                 None, str, lambda x: callable(x)
